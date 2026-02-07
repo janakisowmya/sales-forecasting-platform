@@ -56,11 +56,9 @@ const startServer = async () => {
         await sequelize.authenticate();
         logger.info('Database connection established successfully');
 
-        // Sync models (in production, use migrations instead)
-        if (process.env.NODE_ENV === 'development') {
-            await sequelize.sync();
-            logger.info('Database models synchronized');
-        }
+        // Sync models (create tables if they don't exist)
+        await sequelize.sync();
+        logger.info('Database models synchronized');
 
         // Initialize S3 storage
         logger.info('Calling initializeS3()...');
