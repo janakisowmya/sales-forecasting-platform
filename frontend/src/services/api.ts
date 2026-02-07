@@ -63,4 +63,9 @@ export const forecastAPI = {
         api.get(`/forecasts/${id}/metrics`),
 };
 
+// Stats API
+export const statsAPI = {
+    get: () => api.get('/forecasts/stats'),
+};
+
 export default api;
