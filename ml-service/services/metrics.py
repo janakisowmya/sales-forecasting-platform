@@ -66,8 +66,14 @@ def calculate_metrics(actual: np.ndarray, predicted: np.ndarray) -> Dict[str, fl
     else:
         rmsse = 0.0
     
-    # Accuracy (based on sMAPE for better zero handling)
-    accuracy = max(0, 100 - smape)
+    # Accuracy (using WAPE - Weighted Absolute Percentage Error as it's the industry standard for sales)
+    # This is more robust to zeros than sMAPE/MAPE
+    mean_actual = np.mean(actual)
+    if mean_actual > 0:
+        wape = mae / mean_actual
+        accuracy = max(0, (1 - wape) * 100)
+    else:
+        accuracy = 0.0
     
     metrics = {
         'mae': round(float(mae), 2),

@@ -11,12 +11,25 @@ export interface ForecastRequest {
 }
 
 export interface ForecastResponse {
-    predictions: Array<{ date: string; value: number }>;
+    predictions: Array<{
+        date: string;
+        value: number;
+        lower?: number;
+        upper?: number;
+    }>;
     metrics: {
         mae: number;
         rmse: number;
         mape: number;
         accuracy: number;
+        r2?: number;
+    };
+    insights?: {
+        totalForecastedValue: number;
+        trend: string;
+        growthPercentage: number;
+        confidenceRating: string;
+        narrative: string;
     };
 }
 

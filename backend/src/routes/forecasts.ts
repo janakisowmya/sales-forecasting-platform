@@ -74,7 +74,10 @@ router.post(
                     // Update forecast with results
                     await forecast.update({
                         status: 'completed',
-                        resultsJson: result.predictions,
+                        resultsJson: {
+                            predictions: result.predictions,
+                            insights: result.insights
+                        },
                         metricsJson: result.metrics,
                         completedAt: new Date()
                     });

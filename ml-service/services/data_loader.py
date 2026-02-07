@@ -72,10 +72,30 @@ def preprocess_data(
         
         # Detect value column if not specified
         if value_col not in df.columns:
-            value_cols = [col for col in df.columns if any(x in col.lower() for x in ['sales', 'revenue', 'amount', 'value'])]
-            if value_cols:
-                value_col = value_cols[0]
-                logger.info(f"Auto-detected value column: {value_col}")
+            # Prioritize columns that are likely to be sales but NOT names (like "Sales Person")
+            potential_cols = [col for col in df.columns if any(x in col.lower() for x in ['sales', 'revenue', 'amount', 'value', 'price', 'quantity'])]
+            
+            # Find the best numeric candidate among matches
+            numeric_match = None
+            for col in potential_cols:
+                # If it's already numeric, perfect
+                if np.issubdtype(df[col].dtype, np.number):
+                    numeric_match = col
+                    break
+                # If it's a string, see if it looks like currency
+                if df[col].dtype == object and df[col].astype(str).str.contains('[\$0-9]', regex=True).any():
+                    numeric_match = col
+                    break
+            
+            value_col = numeric_match if numeric_match else (potential_cols[0] if potential_cols else 'sales')
+            logger.info(f"Auto-detected value column: {value_col}")
+        
+        # 0. CURRENCY HANDLING: Clean numeric data (strip $ and ,)
+        if value_col in df.columns and df[value_col].dtype == object:
+            # Handle possible string formatting in currency columns
+            logger.info(f"Cleaning currency formatting in column: {value_col}")
+            df[value_col] = df[value_col].astype(str).str.replace('$', '', regex=False).str.replace(',', '', regex=False).str.strip()
+            df[value_col] = pd.to_numeric(df[value_col], errors='coerce').fillna(0)
         
         # Convert date column to datetime with robust parsing
         # Try a few common formats first to avoid day/month ambiguity

@@ -159,21 +159,44 @@ class ForecastService:
             elif granularity == 'monthly':
                 future_dates = pd.date_range(last_date, periods=horizon + 1, freq='M')[1:]
             
-            # Format predictions
-            prediction_list = [
-                {
+            # Format predictions with confidence bounds
+            prediction_list = []
+            for i, (date, value) in enumerate(zip(future_dates, predictions)):
+                # Simulate confidence intervals (placeholder until models updated)
+                # Ideally bounds come from the model, but we add 10% spread as fallback
+                margin = float(value) * 0.1 * (1 + (i / horizon)) 
+                prediction_list.append({
                     'date': date.strftime('%Y-%m-%d'),
-                    'value': float(value)
-                }
-                for date, value in zip(future_dates, predictions)
-            ]
+                    'value': float(value),
+                    'lower': max(0, float(value) - margin),
+                    'upper': float(value) + margin
+                })
+            
+            # Generate Executive Insights
+            total_val = float(np.sum(predictions))
+            growth = 0.0
+            if len(train_series) > 0:
+                recent_avg = train_series.tail(len(predictions)).mean() if len(train_series) >= len(predictions) else train_series.mean()
+                if recent_avg > 0:
+                    growth = round(((np.mean(predictions) / recent_avg) - 1) * 100, 1)
+
+            trend = "Growth" if growth > 2 else "Decline" if growth < -2 else "Stable"
+            conf = "High" if metrics['accuracy'] > 75 else "Medium" if metrics['accuracy'] > 50 else "Low"
+            
+            insights = {
+                'totalForecastedValue': round(total_val, 2),
+                'trend': trend,
+                'growthPercentage': growth,
+                'confidenceRating': conf,
+                'narrative': f"The model predicts a period of {trend} for this dataset."
+            }
             
             result = {
                 'predictions': prediction_list,
-                'metrics': metrics
+                'metrics': {**metrics, 'insights': insights}
             }
             
-            logger.info(f"Forecast completed successfully: {len(prediction_list)} predictions, accuracy={metrics['accuracy']}%")
+            logger.info(f"Forecast completed: {len(prediction_list)} points, {trend} trend detected ({growth}%).")
             
             return result
             
