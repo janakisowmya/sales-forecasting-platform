@@ -8,24 +8,8 @@ import DatasetUpload from './pages/DatasetUpload';
 import RunForecast from './pages/RunForecast';
 import Results from './pages/Results';
 
-// Stubs for missing pages to unblock build
-const Datasets = () => (
-    <div className="p-8">
-        <h1 className="text-3xl font-bold mb-4">Datasets List</h1>
-        <div className="card py-12 text-center text-gray-400 font-medium">
-            Module path: ./pages/Datasets.tsx (Coming Soon)
-        </div>
-    </div>
-);
-
-const Forecasts = () => (
-    <div className="p-8">
-        <h1 className="text-3xl font-bold mb-4">Forecast History</h1>
-        <div className="card py-12 text-center text-gray-400 font-medium">
-            Module path: ./pages/Forecasts.tsx (Coming Soon)
-        </div>
-    </div>
-);
+import Datasets from './pages/Datasets';
+import Forecasts from './pages/Forecasts';
 
 const App: React.FC = () => {
     return (

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { forecastAPI } from '../services/api';
 import { Forecast } from '../types';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, ComposedChart } from 'recharts';
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Area, ComposedChart } from 'recharts';
 import { TrendingUp, Clock, CheckCircle, XCircle, Loader, DollarSign, ArrowUpRight, ArrowDownRight, Minus } from 'lucide-react';
 
 const Results: React.FC = () => {
