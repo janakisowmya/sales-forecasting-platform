@@ -15,17 +15,11 @@ const Results: React.FC = () => {
         const fetchForecast = async () => {
             if (!id) return;
             try {
-                // Compatibility layer for older API response structure
-                const response = await (forecastAPI as any).getById(parseInt(id));
-                setForecast(response);
+                const response = await forecastAPI.get(parseInt(id));
+                const data = response.data.forecast || response.data;
+                setForecast(data);
             } catch (err: any) {
-                try {
-                    // Try legacy .get method if getById fails
-                    const resp = await (forecastAPI as any).get(parseInt(id));
-                    setForecast(resp.data.forecast);
-                } catch (innerErr: any) {
-                    setError(innerErr.response?.data?.message || 'Failed to load forecast results');
-                }
+                setError(err.response?.data?.message || 'Failed to load forecast results');
             } finally {
                 setLoading(false);
             }

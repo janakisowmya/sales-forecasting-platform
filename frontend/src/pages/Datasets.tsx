@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { datasetAPI } from '../services/api';
 import { Dataset } from '../types';
-import { Database, Upload, Calendar, Trash2, Loader, FileText } from 'lucide-react';
+import { Database, Upload, Calendar, Loader, FileText } from 'lucide-react';
 
 const Datasets: React.FC = () => {
     const [datasets, setDatasets] = useState<Dataset[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [, setError] = useState('');
 
     useEffect(() => {
         fetchDatasets();

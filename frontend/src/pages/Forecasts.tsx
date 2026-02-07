@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { forecastAPI } from '../services/api';
 import { Forecast } from '../types';
-import { Search, Filter, Calendar, BarChart3, Clock, CheckCircle, XCircle, Loader } from 'lucide-react';
+import { BarChart3, Clock, CheckCircle, XCircle, Loader } from 'lucide-react';
 
 const Forecasts: React.FC = () => {
     const [forecasts, setForecasts] = useState<Forecast[]>([]);
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [, setError] = useState('');
 
     useEffect(() => {
         fetchForecasts();
