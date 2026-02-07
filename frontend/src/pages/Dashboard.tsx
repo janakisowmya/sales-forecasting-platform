@@ -27,7 +27,7 @@ const Dashboard: React.FC = () => {
             title: 'View Results',
             description: 'Analyze forecast accuracy and metrics',
             icon: BarChart3,
-            link: '/results',
+            link: '/forecasts',
             color: 'from-green-500 to-emerald-500',
             requiredRole: 'viewer',
         },
