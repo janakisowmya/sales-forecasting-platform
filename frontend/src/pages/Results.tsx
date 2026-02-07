@@ -79,7 +79,7 @@ const Results: React.FC = () => {
 
             <div className="grid grid-cols-1 gap-8">
                 {/* Executive Summary Card */}
-                {insights && (
+                {insights && insights.narrative && (
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                         <div className="card md:col-span-3 border-l-4 border-l-primary-500 bg-gradient-to-r from-primary-950/20 to-transparent">
                             <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
