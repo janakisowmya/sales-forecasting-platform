@@ -122,6 +122,10 @@ npm run dev
 
 # ML Service
 cd ml-service
+
+# Note for MacOS users: XGBoost requires OpenMP. Install it via Homebrew first:
+# brew install libomp
+
 pip install -r requirements.txt
 uvicorn main:app --reload
 
