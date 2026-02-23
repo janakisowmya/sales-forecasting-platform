@@ -68,10 +68,12 @@ def preprocess_data(
     try:
         # Detect date column if not specified
         if date_col not in df.columns:
-            date_cols = [col for col in df.columns if 'date' in col.lower()]
+            date_cols = [col for col in df.columns if 'date' in col.lower() or 'time' in col.lower() or 'day' in col.lower() or 'month' in col.lower() or 'year' in col.lower()]
             if date_cols:
                 date_col = date_cols[0]
                 logger.info(f"Auto-detected date column: {date_col}")
+            else:
+                raise ValueError(f"Time-series forecasting requires a date/time column. Found columns: {', '.join(df.columns.tolist())}")
         
         # Detect value column if not specified
         if value_col not in df.columns:
