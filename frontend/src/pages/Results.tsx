@@ -12,20 +12,33 @@ const Results: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
+        if (!id) return;
+
+        let intervalId: ReturnType<typeof setInterval>;
+
         const fetchForecast = async () => {
-            if (!id) return;
             try {
                 const response = await forecastAPI.get(parseInt(id));
                 const data = response.data.forecast || response.data;
                 setForecast(data);
+
+                if (data.status === 'completed' || data.status === 'failed') {
+                    if (intervalId) clearInterval(intervalId);
+                }
             } catch (err: any) {
                 setError(err.response?.data?.message || 'Failed to load forecast results');
+                if (intervalId) clearInterval(intervalId);
             } finally {
                 setLoading(false);
             }
         };
 
         fetchForecast();
+        intervalId = setInterval(fetchForecast, 3000);
+
+        return () => {
+            if (intervalId) clearInterval(intervalId);
+        };
     }, [id]);
 
     if (loading) {
