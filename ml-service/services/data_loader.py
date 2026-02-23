@@ -34,6 +34,9 @@ def load_data_from_url(url: str) -> pd.DataFrame:
         # Parse CSV
         df = pd.read_csv(StringIO(response.text))
         
+        # Clean column names (remove BOMs and unexpected whitespace)
+        df.columns = df.columns.str.strip().str.replace('\ufeff', '')
+        
         # Cache the result
         dataset_cache.set(url, df, granularity='raw')
         
