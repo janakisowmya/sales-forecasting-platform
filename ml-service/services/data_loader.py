@@ -79,7 +79,7 @@ def preprocess_data(
             numeric_match = None
             for col in potential_cols:
                 # If it's already numeric, perfect
-                if np.issubdtype(df[col].dtype, np.number):
+                if pd.api.types.is_numeric_dtype(df[col]):
                     numeric_match = col
                     break
                 # If it's a string, see if it looks like currency
